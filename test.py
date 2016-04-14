@@ -4,6 +4,7 @@ from indivisible import is_prime, get_how_many_prime_numbers
 assert is_prime(3) == True
 assert is_prime(4) == False
 assert is_prime(7) == True
+assert is_prime(9) == False
 assert is_prime(10) == False
 assert is_prime(11) == True
 assert is_prime(95) == False
