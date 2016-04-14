@@ -24,3 +24,8 @@ function getHowManyPrimeNumbers(n) {
     i++;
   }
 }
+
+module.exports = {
+  isPrime: isPrime,
+  getHowManyPrimeNumbers: getHowManyPrimeNumbers
+};
