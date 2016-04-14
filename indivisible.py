@@ -12,9 +12,8 @@ def is_prime(n):
 def get_how_many_prime_numbers(n):
     i = 2
     results = []
-    while True:
+    while len(results) < n:
         if is_prime(i):
             results.append(i)
-        if len(results) >= n:
-            return results
         i += 1
+    return results
