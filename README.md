@@ -7,4 +7,4 @@ These functions are for reminding me to determine whether a number is prime and 
 
 # Testing
 
-The first 168 prime numbers are (copy/pasted from Wikipedia) into `prime_numbers.csv` for testing (`test.py`, `test.js`, etc) the algorithms.
+The first 168 prime numbers are (copy/pasted [from Wikipedia](https://en.wikipedia.org/wiki/Prime_number)) into `prime_numbers.csv` for testing (`test.py`, `test.js`, etc) the algorithms.
