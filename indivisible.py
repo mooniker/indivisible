@@ -18,12 +18,3 @@ def get_how_many_prime_numbers(n):
         if len(results) >= n:
             return results
         i += 1
-
-assert is_prime(3) == True
-assert is_prime(4) == False
-assert is_prime(7) == True
-assert is_prime(10) == False
-assert is_prime(11) == True
-assert is_prime(95) == False
-assert is_prime(101) == True
-print 'Done.'
