@@ -1,21 +1,71 @@
 var indivisible = require('./indivisible');
 var assert = require('assert');
 
-// Check some basic prime numbers
-assert.deepEqual(indivisible.isPrime(3), true);
-assert.deepEqual(indivisible.isPrime(4), false);
-assert.deepEqual(indivisible.isPrime(7), true);
-assert.deepEqual(indivisible.isPrime(9), false);
-assert.deepEqual(indivisible.isPrime(10), false);
-assert.deepEqual(indivisible.isPrime(11), true);
-assert.deepEqual(indivisible.isPrime(95), false);
-assert.deepEqual(indivisible.isPrime(101), true);
+// // Check some basic prime numbers
+// assert.deepEqual(indivisible.isPrime(3), true);
+// assert.deepEqual(indivisible.isPrime(4), false);
+// assert.deepEqual(indivisible.isPrime(7), true);
+// assert.deepEqual(indivisible.isPrime(9), false);
+// assert.deepEqual(indivisible.isPrime(10), false);
+// assert.deepEqual(indivisible.isPrime(11), true);
+// assert.deepEqual(indivisible.isPrime(95), false);
+// assert.deepEqual(indivisible.isPrime(101), true);
+//
+// var first168primeNumbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997];
+//
+// for (var i = 1; i < first168primeNumbers.length + 1; i++) {
+//   console.log('i:', i, indivisible.getHowManyPrimeNumbers(i), first168primeNumbers.slice(0, i));
+//   assert.deepEqual(indivisible.getHowManyPrimeNumbers(i), first168primeNumbers.slice(0, i));
+// }
+//
+// console.log('All passed');
 
-var first168primeNumbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997];
+var fs = require('fs');
 
-for (var i = 1; i < first168primeNumbers.length + 1; i++) {
-  console.log('i:', i, indivisible.getHowManyPrimeNumbers(i), first168primeNumbers.slice(0, i));
-  assert.deepEqual(indivisible.getHowManyPrimeNumbers(i), first168primeNumbers.slice(0, i));
+fs.readFile('./prime_numbers.csv', 'utf-8', function(err, data) {
+  if (err) throw err;
+  else {
+    // Parse all the comma-separated numbers into an array of integers
+    var fileContents = (data.toString('utf-8')).split(',');
+
+    var primeNumbers = fileContents.map(function(num) {
+      return parseInt(num.trim());
+    });
+    // make sure we loaded something from the file
+    assert.equal(primeNumbers.length > 0, true);
+    // run tests with these numbers
+    runTests(primeNumbers);
+  }
+});
+
+function runTests(numbers) {
+
+  var numbersMin = numbers[0];
+  var numbersMax = numbers[numbers.length - 1];
+
+  console.log('Testing all integers from', numbersMin, 'to', numbersMax, 'against list of prime numbers from Wikipedia.');
+
+  for (var i = 2; i <= numbersMax; i++) {
+    if (numbers.indexOf(i) >= 0)
+      assert.equal(indivisible.isPrime(i), true);
+    else assert.equal(indivisible.isPrime(i), false);
+  }
+
+  console.log('OK!');
+
+  console.log('Testing queries for n number of prime numbers, n =', numbersMin, 'to n =', numbersMax + '.');
+
+  for (var j = 1; j <= numbers.length; j++) {
+    // get i number of prime numbers
+    var gottenPrimeNumbers = indivisible.getHowManyPrimeNumbers(j);
+    // make sure the prime numbers we got are the same as an equivalent subset of the reference prime numbers
+    assert.deepEqual(gottenPrimeNumbers, numbers.slice(0, j));
+    // make sure the number of prime numbers we got is the same as the number requested
+    assert.deepEqual(gottenPrimeNumbers.length, j);
+  }
+
+  console.log('OK!');
+
+  console.log('Done. All korrect!');
+
 }
-
-console.log('All passed');
